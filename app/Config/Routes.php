@@ -6,13 +6,35 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->get('/', 'HomeController::index');
+$routes->get('/wisata/(:num)', 'HomeController::detail/$1');
+$routes->post('/ulasan/simpan', 'ReviewsController::simpan');
 
 $routes->get('/login', 'Auth::login');
 $routes->post('/login', 'Auth::loginProcess');
 $routes->get('/logout', 'Auth::logout');
 
 // Simulasi dashboard berdasarkan role
-$routes->get('/super-admin/dashboard', 'SuperAdmin::dashboard', ['filter' => 'role:super_admin']);
+// $routes->get('/super-admin/dashboard', 'SuperAdmin::dashboard', ['filter' => 'role:super_admin']);
+$routes->group('admin/reviews', [
+    'namespace' => 'App\Controllers',
+    'filter' => 'role:admin'
+], function ($routes) {
+    $routes->get('/', 'ReviewsController::index'); // /admin/reviews
+});
+
+$routes->group('superadmin', ['filter' => 'role:super_admin'], function ($routes) {
+    // ✅ Redirect otomatis ke daftar admin saat akses /superadmin
+    $routes->get('/', 'SuperAdmin::adminIndex');
+
+    // ✅ CRUD Admin
+    $routes->get('admins', 'SuperAdmin::adminIndex');
+    $routes->get('admins/create', 'SuperAdmin::adminCreate');
+    $routes->post('admins/store', 'SuperAdmin::adminStore');
+    $routes->get('admins/edit/(:num)', 'SuperAdmin::adminEdit/$1');
+    $routes->post('admins/update/(:num)', 'SuperAdmin::adminUpdate/$1');
+    $routes->get('admins/delete/(:num)', 'SuperAdmin::adminDelete/$1');
+});
+
 $routes->get('/admin/dashboard', 'DashboardAdminController::index', ['filter' => 'role:admin']);
 
 $routes->get('rekomendasi/filter-form', 'RekomendasiController::filterForm');  // Menampilkan form filter

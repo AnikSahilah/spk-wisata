@@ -55,6 +55,38 @@
     </div>
 </div>
 
+<h5 class="mb-3 mt-5">🏆 3 Wisata dengan Rating Tertinggi</h5>
+<div class="row g-4">
+    <?php foreach ($topWisata as $wisata): ?>
+        <div class="col-md-4">
+            <div class="card top-wisata-card shadow-sm border-0 h-100">
+                <div class="card-body d-flex flex-column align-items-center text-center p-4">
+                    <div class="top-wisata-icon mb-3">
+                        <i class="bi bi-stars"></i>
+                    </div>
+                    <h6 class="fw-bold text-dark mb-2"><?= esc($wisata->nama_wisata) ?></h6>
+                    <div class="rating-stars mb-2">
+                        <?php
+                        $fullStars = floor($wisata->rata_rating);
+                        $halfStar = ($wisata->rata_rating - $fullStars) >= 0.5;
+                        ?>
+                        <?php for ($i = 0; $i < $fullStars; $i++): ?>
+                            <i class="bi bi-star-fill text-warning"></i>
+                        <?php endfor; ?>
+                        <?php if ($halfStar): ?>
+                            <i class="bi bi-star-half text-warning"></i>
+                        <?php endif; ?>
+                        <?php for ($i = $fullStars + $halfStar; $i < 5; $i++): ?>
+                            <i class="bi bi-star text-muted"></i>
+                        <?php endfor; ?>
+                    </div>
+                    <small class="text-secondary">Rating Rata-rata: <?= number_format($wisata->rata_rating, 2) ?> / 5.00</small>
+                </div>
+            </div>
+        </div>
+    <?php endforeach; ?>
+</div>
+
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
 
@@ -168,6 +200,30 @@
         .card-text {
             font-size: 1.5rem;
         }
+    }
+
+    .top-wisata-card {
+        background: linear-gradient(135deg, #fef9c3, #fef3c7);
+        border-radius: 12px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .top-wisata-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .top-wisata-icon {
+        background-color: #fde68a;
+        color: #b45309;
+        font-size: 2rem;
+        padding: 12px;
+        border-radius: 50%;
+        box-shadow: 0 4px 8px rgba(252, 211, 77, 0.5);
+    }
+
+    .rating-stars i {
+        font-size: 1.3rem;
     }
 </style>
 

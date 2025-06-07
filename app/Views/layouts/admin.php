@@ -242,13 +242,24 @@
             <i class="bi bi-check2-circle"></i>
             <span>Nilai Alternatif</span>
         </a>
+        <a href="/admin/reviews" class="<?= uri_string() === 'admin/reviews' ? 'active' : '' ?>">
+            <i class="bi bi-star-fill"></i>
+            <span>Reviews</span>
+        </a>
     </nav>
 
-    <header class="topbar">
-        <h4>Selamat Datang, Admin</h4>
-        <div>
-            <a href="/admin/profil" class="btn btn-sm btn-outline-primary me-2" role="button">Profil</a>
-            <a href="/admin/logout" class="btn btn-sm btn-danger" role="button">Keluar</a>
+    <header class="topbar d-flex justify-content-between align-items-center py-3 px-4 shadow-sm bg-white border-bottom">
+        <h4 class="mb-0 fw-semibold">👋 Selamat Datang, Admin</h4>
+        <div class="d-flex align-items-center gap-2">
+            <!-- Tombol Fullscreen / Mode Desktop -->
+            <button id="fullscreenBtn" class="btn btn-sm btn-outline-secondary" title="Layar Penuh">
+                <i class="bi bi-arrows-fullscreen fs-5"></i>
+            </button>
+
+            <!-- Tombol Logout (ikon saja) -->
+            <a href="/logout" class="btn btn-sm btn-outline-danger" title="Keluar">
+                <i class="bi bi-box-arrow-right fs-5"></i>
+            </a>
         </div>
     </header>
 
@@ -258,6 +269,19 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+        fullscreenBtn.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch((err) => {
+                    alert(`Gagal masuk mode layar penuh: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        });
+    </script>
 </body>
 
 </html>

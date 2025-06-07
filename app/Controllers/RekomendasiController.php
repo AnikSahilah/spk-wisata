@@ -25,15 +25,13 @@ class RekomendasiController extends BaseController
     public function filterForm()
     {
         helper('form');
-        $kriteriaModel = new \App\Models\KriteriaModel();
-        $subKriteriaModel = new \App\Models\SubKriteriaModel();
 
-        $kriteria = $kriteriaModel->findAll();
+        $kriteria = $this->kriteriaModel->findAll();
 
         // Kelompokkan sub-kriteria berdasarkan kriteria
         $subKriteria = [];
         foreach ($kriteria as $k) {
-            $subKriteria[$k['nama_kriteria']] = $subKriteriaModel
+            $subKriteria[$k['nama_kriteria']] = $this->subKriteriaModel
                 ->where('kriteria_id', $k['id'])
                 ->findAll();
         }
@@ -46,12 +44,9 @@ class RekomendasiController extends BaseController
 
     public function index()
     {
-        // Ambil sub kriteria yang dipilih
-        $subKriteriaInput = $this->request->getPost('sub_kriteria'); // bentuknya array per kriteria
-        $bobotUser = $this->request->getPost('bobot');
+        $subKriteriaInput = $this->request->getPost('sub_kriteria');
 
         $selectedSubKriteriaIds = [];
-
         foreach ($subKriteriaInput as $value) {
             if (is_array($value)) {
                 $selectedSubKriteriaIds = array_merge($selectedSubKriteriaIds, $value);
@@ -60,19 +55,7 @@ class RekomendasiController extends BaseController
             }
         }
 
-        // Validasi total bobot = 1
-        $totalBobot = array_sum($bobotUser);
-        if (abs($totalBobot - 1) > 0.01) {
-            return redirect()->back()->withInput()->with('error', 'Total bobot harus sama dengan 1. Silakan sesuaikan kembali.');
-        }
-
-        // Debug sementara
-        // dd([
-        //     'selectedSubKriteriaIds' => $selectedSubKriteriaIds,
-        //     'bobotUser' => $bobotUser
-        // ]);
-
-        // Ambil sub_kriteria ID yang berkaitan dengan "Jenis Wisata"
+        // Ambil ID sub_kriteria yang berkaitan dengan "Jenis Wisata"
         $jenisWisataSubIds = $this->subKriteriaModel
             ->select('sub_kriteria.id')
             ->join('kriteria', 'kriteria.id = sub_kriteria.kriteria_id')
@@ -81,9 +64,8 @@ class RekomendasiController extends BaseController
 
         $jenisWisataIds = array_column($jenisWisataSubIds, 'id');
         $jenisYangDipilih = array_intersect($selectedSubKriteriaIds, $jenisWisataIds);
-        // dd($jenisYangDipilih);
 
-        // Filter wisata berdasarkan sub_kriteria jenis
+        // Filter wisata berdasarkan sub_kriteria jenis wisata
         $wisataFiltered = $this->wisataModel
             ->whereIn('sub_kriteria_id', $jenisYangDipilih)
             ->findAll();
@@ -93,7 +75,6 @@ class RekomendasiController extends BaseController
         }
 
         $wisataIds = array_column($wisataFiltered, 'id');
-        // dd($wisataIds);
 
         // Ambil nilai alternatif
         $db = \Config\Database::connect();
@@ -107,7 +88,6 @@ class RekomendasiController extends BaseController
         }
 
         $rows = $builder->get()->getResultArray();
-        // dd($rows);
 
         // Kelompokkan nilai berdasarkan wisata dan kriteria
         $nilaiSementara = [];
@@ -115,7 +95,6 @@ class RekomendasiController extends BaseController
             $kriteriaId = $row['kriteria_id'];
             $nilaiSementara[$row['wisata_id']][$kriteriaId][] = $row['nilai'];
         }
-        // dd($nilaiSementara);
 
         $nilaiAlternatif = [];
         foreach ($nilaiSementara as $wisataId => $kriteriaArray) {
@@ -124,9 +103,8 @@ class RekomendasiController extends BaseController
                 $nilaiAlternatif[$wisataId][$kriteriaId] = $avg;
             }
         }
-        // dd($nilaiAlternatif);
 
-        $hasil = $this->hitungSAW($nilaiAlternatif, $bobotUser);
+        $hasil = $this->hitungSAW($nilaiAlternatif);
         arsort($hasil);
         $top3 = array_slice($hasil, 0, 3, true);
 
@@ -142,7 +120,7 @@ class RekomendasiController extends BaseController
         return view('rekomendasi/hasil', compact('result'));
     }
 
-    protected function hitungSAW(array $nilaiAlternatif, array $bobotUser): array
+    protected function hitungSAW(array $nilaiAlternatif): array
     {
         $kriteriaList = $this->kriteriaModel->findAll();
         $bobot = [];
@@ -150,12 +128,12 @@ class RekomendasiController extends BaseController
         $skipKriteriaIds = [];
 
         foreach ($kriteriaList as $k) {
-            if ($k['nama_kriteria'] == 'Jenis Wisata') {
+            if ($k['nama_kriteria'] === 'Jenis Wisata') {
                 $skipKriteriaIds[] = $k['id'];
                 continue;
             }
 
-            $bobot[$k['id']] = isset($bobotUser[$k['id']]) ? floatval($bobotUser[$k['id']]) : 0;
+            $bobot[$k['id']] = floatval($k['bobot']);
             $tipe[$k['id']] = $k['type'];
         }
 

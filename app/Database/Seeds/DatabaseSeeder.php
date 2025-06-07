@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call('SubKriteriaSeeder');
         $this->call('WisataSeeder');
         $this->call('NilaiAlternatifSeeder');
+        $this->call('ReviewsSeeder');
 
         // Contoh tambahan:
         // $this->call('PostSeeder');

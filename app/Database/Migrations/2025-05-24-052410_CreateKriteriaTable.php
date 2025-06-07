@@ -25,6 +25,12 @@ class CreateKriteriaTable extends Migration
                 'default'    => 'benefit',
                 'null'       => false,
             ],
+            'bobot' => [
+                'type'       => 'DECIMAL',
+                'constraint' => '4,2', // total 4 digit, 2 di belakang koma, max 99.99
+                'null'       => false,
+                'default'    => 0.00,
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
