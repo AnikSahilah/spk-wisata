@@ -6,6 +6,16 @@
     <h2 class="mb-4">Tambah Wisata</h2>
 
     <form action="/admin/wisata/store" method="post" enctype="multipart/form-data">
+        <?php if (session('errors')): ?>
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    <?php foreach (session('errors') as $error): ?>
+                        <li><?= esc($error) ?></li>
+                    <?php endforeach ?>
+                </ul>
+            </div>
+        <?php endif; ?>
+
         <?= csrf_field() ?>
 
         <!-- Nama Wisata -->

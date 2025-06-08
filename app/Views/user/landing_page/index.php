@@ -166,19 +166,16 @@
                     <div class="col-md-6 p-4 d-flex flex-column justify-content-center">
                         <h4 class="fw-bold mb-3">Mengenal Lebih Dekat</h4>
                         <p class="mb-3 text-justify">
-                            Wisata Bondowoso adalah portal resmi destinasi wisata di Kabupaten Bondowoso. Kami
-                            menyediakan informasi lengkap mengenai tempat-tempat menarik, budaya, kuliner, dan event lokal.
+                            BonDay adalah sistem rekomendasi wisata cerdas yang dirancang khusus untuk mengeksplorasi destinasi unggulan di Kabupaten Bondowoso. Fokus kami adalah menghadirkan pilihan wisata alam, buatan, sejarah, dan budaya yang sesuai dengan minat dan preferensi pengunjung.
                         </p>
                         <p class="text-justify">
-                            Dengan komitmen untuk mempromosikan keindahan alam dan kekayaan budaya Bondowoso, kami
-                            berupaya memberikan pengalaman terbaik bagi wisatawan. Jelajahi berbagai destinasi
-                            pilihan dan nikmati pesona alam serta keramahan masyarakat setempat.
+                            Dengan dukungan teknologi dan informasi yang akurat, BonDay membantu wisatawan menemukan pengalaman terbaik di setiap sudut Bondowoso dari keindahan alam yang memukau hingga kekayaan budaya yang autentik.
                         </p>
                     </div>
 
                     <!-- Bagian Kanan: Gambar -->
                     <div class="col-md-6">
-                        <img src="<?= base_url('assets/images/tentang.jpg') ?>" alt="Tentang Wisata Bondowoso"
+                        <img src="<?= base_url('assets/images/gerbong_maut1.jpg') ?>" alt="Tentang Wisata Bondowoso"
                             class="img-fluid rounded-end h-100 w-100 object-fit-cover">
                     </div>
                 </div>

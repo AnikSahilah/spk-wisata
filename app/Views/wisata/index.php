@@ -168,6 +168,41 @@
             justify-content: flex-end;
         }
     }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        padding-top: 1rem;
+        list-style: none;
+        gap: 0.5rem;
+    }
+
+    .pagination li {
+        display: inline-block;
+    }
+
+    .pagination li a,
+    .pagination li span {
+        display: block;
+        padding: 0.5rem 0.75rem;
+        background-color: #f1f5f9;
+        color: #1e3a8a;
+        border-radius: 0.375rem;
+        text-decoration: none;
+        font-weight: 500;
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .pagination li a:hover {
+        background-color: #e2e8f0;
+        color: #0f172a;
+    }
+
+    .pagination li.active span {
+        background-color: #1e3a8a;
+        color: #fff;
+        cursor: default;
+    }
 </style>
 
 <div class="container">
@@ -232,6 +267,9 @@
                 <?php endif ?>
             </tbody>
         </table>
+        <div class="mt-4">
+            <?= $pager->links() ?>
+        </div>
     </div>
 </div>
 

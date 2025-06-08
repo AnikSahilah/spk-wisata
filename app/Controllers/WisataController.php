@@ -21,7 +21,9 @@ class WisataController extends BaseController
         $data['wisata'] = $this->wisataModel
             ->select('wisata.*, sub_kriteria.nama as sub_kriteria_nama')
             ->join('sub_kriteria', 'wisata.sub_kriteria_id = sub_kriteria.id')
-            ->findAll();
+            ->paginate(10);
+
+        $data['pager'] = $this->wisataModel->pager;
 
         return view('wisata/index', $data);
     }
@@ -35,14 +37,41 @@ class WisataController extends BaseController
 
     public function store()
     {
-        $file = $this->request->getFile('gambar');
+        $validationRules = [
+            'nama_wisata'      => 'required',
+            'alamat'           => 'required',
+            'sub_kriteria_id'  => 'required',
+            'gambar' => [
+                'uploaded[gambar]',
+                'is_image[gambar]',
+                'max_size[gambar,2048]' // 2048 KB = 2MB
+            ]
+        ];
 
-        if ($file->isValid() && !$file->hasMoved()) {
-            $namaGambar = $file->getRandomName();
-            $file->move('assets/images', $namaGambar);
-        } else {
-            $namaGambar = null;
+        $validationMessages = [
+            'nama_wisata' => [
+                'required' => 'Nama wisata wajib diisi.'
+            ],
+            'alamat' => [
+                'required' => 'Alamat wajib diisi.'
+            ],
+            'sub_kriteria_id' => [
+                'required' => 'Sub kriteria wajib dipilih.'
+            ],
+            'gambar' => [
+                'uploaded' => 'Gambar wajib diunggah.',
+                'is_image' => 'File yang diunggah harus berupa gambar.',
+                'max_size' => 'Ukuran gambar tidak boleh lebih dari 2MB.'
+            ]
+        ];
+
+        if (!$this->validate($validationRules, $validationMessages)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
+
+        $file = $this->request->getFile('gambar');
+        $namaGambar = $file->getRandomName();
+        $file->move('assets/images', $namaGambar);
 
         $this->wisataModel->insert([
             'nama_wisata' => $this->request->getPost('nama_wisata'),
@@ -51,7 +80,7 @@ class WisataController extends BaseController
             'sub_kriteria_id' => $this->request->getPost('sub_kriteria_id'),
         ]);
 
-        return redirect()->to('/admin/wisata');
+        return redirect()->to('/admin/wisata')->with('success', 'Data berhasil ditambahkan');
     }
 
     public function edit($id)
@@ -67,18 +96,50 @@ class WisataController extends BaseController
     public function update($id)
     {
         $wisata = $this->wisataModel->find($id);
+
+        $validationRules = [
+            'nama_wisata'      => 'required',
+            'alamat'           => 'required',
+            'sub_kriteria_id'  => 'required',
+            'gambar' => [
+                'uploaded[gambar]',
+                'is_image[gambar]',
+                'max_size[gambar,2048]' // 2048 KB = 2MB
+            ]
+        ];
+
+        $validationMessages = [
+            'nama_wisata' => [
+                'required' => 'Nama wisata wajib diisi.'
+            ],
+            'alamat' => [
+                'required' => 'Alamat wajib diisi.'
+            ],
+            'sub_kriteria_id' => [
+                'required' => 'Sub kriteria wajib dipilih.'
+            ],
+            'gambar' => [
+                'uploaded' => 'Gambar wajib diunggah.',
+                'is_image' => 'File yang diunggah harus berupa gambar.',
+                'max_size' => 'Ukuran gambar tidak boleh lebih dari 2MB.'
+            ]
+        ];
+
+        if (!$this->validate($validationRules, $validationMessages)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         $file = $this->request->getFile('gambar');
 
         if ($file && $file->isValid() && !$file->hasMoved()) {
             $namaGambar = $file->getRandomName();
             $file->move('assets/images', $namaGambar);
 
-            // Hapus gambar lama
             if ($wisata['gambar'] && file_exists('assets/images/' . $wisata['gambar'])) {
                 unlink('assets/images/' . $wisata['gambar']);
             }
         } else {
-            $namaGambar = $wisata['gambar']; // Tetap gunakan gambar lama
+            $namaGambar = $wisata['gambar'];
         }
 
         $this->wisataModel->update($id, [
@@ -88,7 +149,7 @@ class WisataController extends BaseController
             'sub_kriteria_id' => $this->request->getPost('sub_kriteria_id'),
         ]);
 
-        return redirect()->to('/admin/wisata');
+        return redirect()->to('/admin/wisata')->with('success', 'Data berhasil diperbarui');
     }
 
     public function delete($id)

@@ -123,8 +123,8 @@
 
     <div class="login-wrapper">
         <div class="login-form">
-            <h2>Login Untuk Akes Sistem</h2>
-            <p class="subtext">Masuk ke akun Anda untuk mulai menjelajahi keindahan wisata Bondowoso.</p>
+            <h2>Login Untuk Akses Sistem</h2>
+            <p class="subtext">Masuk ke akun anda untuk management data website.</p>
 
             <?php if (session()->getFlashdata('error')): ?>
                 <div class="error-text"><?= session()->getFlashdata('error') ?></div>

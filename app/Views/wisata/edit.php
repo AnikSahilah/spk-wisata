@@ -6,6 +6,16 @@
     <h2 class="mb-4">Edit Wisata</h2>
 
     <form action="/admin/wisata/update/<?= esc($wisata['id']) ?>" method="post" enctype="multipart/form-data">
+        <?php if (session('errors')): ?>
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    <?php foreach (session('errors') as $error): ?>
+                        <li><?= esc($error) ?></li>
+                    <?php endforeach ?>
+                </ul>
+            </div>
+        <?php endif; ?>
+
         <?= csrf_field() ?>
 
         <!-- Nama Wisata -->
