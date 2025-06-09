@@ -5,7 +5,7 @@
 
     <h2 class="mb-4">Tambah Sub Kriteria</h2>
 
-    <form action="<?= route_to('subkriteria.store') ?>" method="post">
+    <form action="<?= route_to('admin/sub-kriteria/store') ?>" method="post">
         <?= csrf_field() ?>
 
         <!-- Nama Sub Kriteria -->

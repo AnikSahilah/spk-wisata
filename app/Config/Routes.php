@@ -56,12 +56,12 @@ $routes->group('admin/sub-kriteria', [
     'namespace' => 'App\Controllers',
     'filter' => 'role:admin'
 ], function ($routes) {
-    $routes->get('/', 'SubKriteriaController::index', ['as' => 'subkriteria.index']);
-    $routes->get('create', 'SubKriteriaController::create', ['as' => 'subkriteria.create']);
-    $routes->post('store', 'SubKriteriaController::store', ['as' => 'subkriteria.store']);
-    $routes->get('edit/(:num)', 'SubKriteriaController::edit/$1', ['as' => 'subkriteria.edit']);
-    $routes->post('update/(:num)', 'SubKriteriaController::update/$1', ['as' => 'subkriteria.update']);
-    $routes->post('delete/(:num)', 'SubKriteriaController::destroy/$1', ['as' => 'subkriteria.delete']);
+    $routes->get('/', 'SubKriteriaController::index');
+    $routes->get('create', 'SubKriteriaController::create');
+    $routes->post('store', 'SubKriteriaController::store');
+    $routes->get('edit/(:num)', 'SubKriteriaController::edit/$1');
+    $routes->post('update/(:num)', 'SubKriteriaController::update/$1');
+    $routes->post('delete/(:num)', 'SubKriteriaController::destroy/$1');
 });
 
 $routes->group('admin/wisata', [

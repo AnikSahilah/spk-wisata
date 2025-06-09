@@ -5,7 +5,8 @@
 
     <h2 class="mb-4">Edit Sub Kriteria</h2>
 
-    <form action="<?= route_to('subkriteria.update', $subkriteria['id']) ?>" method="post">
+    <!-- <form action="<?= route_to('admin/sub-kriteria/update', $subkriteria['id']) ?>" method="post"> -->
+    <form action="/admin/sub-kriteria/update/<?= $subkriteria['id'] ?>" method="post">
         <?= csrf_field() ?>
 
         <!-- Nama Sub Kriteria -->

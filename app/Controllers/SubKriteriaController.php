@@ -18,7 +18,12 @@ class SubKriteriaController extends BaseController
 
     public function index()
     {
-        $data['subkriteria'] = $this->subKriteriaModel->join('kriteria', 'kriteria.id = sub_kriteria.kriteria_id')->findAll();
+        $data['subkriteria'] = $this->subKriteriaModel
+            ->select('sub_kriteria.*, kriteria.nama_kriteria')  // ambil semua field sub_kriteria + nama kriteria
+            ->join('kriteria', 'kriteria.id = sub_kriteria.kriteria_id')  // JOIN ON
+            ->orderBy('sub_kriteria.id', 'ASC')
+            ->findAll();
+
         return view('sub-kriteria/index', $data);
     }
 
@@ -35,7 +40,7 @@ class SubKriteriaController extends BaseController
             'nama'        => $this->request->getPost('nama'),
         ]);
 
-        return redirect()->to('/admin/sub-kriteria')->with('success', 'Data berhasil ditambahkan.');
+        return redirect()->to('admin/sub-kriteria')->with('success', 'Data berhasil ditambahkan.');
     }
 
     public function edit($id)
@@ -47,17 +52,18 @@ class SubKriteriaController extends BaseController
 
     public function update($id)
     {
+        // dd($this->request->getPost());
         $this->subKriteriaModel->update($id, [
             'kriteria_id' => $this->request->getPost('kriteria_id'),
             'nama'        => $this->request->getPost('nama'),
         ]);
 
-        return redirect()->to('/admin/sub-kriteria')->with('success', 'Data berhasil diperbarui.');
+        return redirect()->to('admin/sub-kriteria')->with('success', 'Data berhasil diperbarui.');
     }
 
     public function destroy($id)
     {
         $this->subKriteriaModel->delete($id);
-        return redirect()->to('/admin/sub-kriteria')->with('success', 'Data berhasil dihapus.');
+        return redirect()->to('admin/sub-kriteria')->with('success', 'Data berhasil dihapus.');
     }
 }

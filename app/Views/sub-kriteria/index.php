@@ -172,7 +172,7 @@
     <div class="card-custom">
         <div class="card-header">
             <h2>Data Sub Kriteria</h2>
-            <a href="<?= route_to('subkriteria.create') ?>" class="btn-add">
+            <a href="<?= route_to('admin/sub-kriteria/create') ?>" class="btn-add">
                 <i class="bi bi-plus-lg"></i> Tambah Sub Kriteria
             </a>
         </div>
@@ -196,10 +196,10 @@
                             <td data-label="Kriteria"><?= esc($sk['nama_kriteria']) ?></td>
                             <td data-label="Aksi">
                                 <div class="action-icons">
-                                    <a href="<?= route_to('subkriteria.edit', $sk['id']) ?>" title="Edit">
+                                    <a href="/admin/sub-kriteria/edit/<?= $sk['id'] ?>" title="Edit">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
-                                    <form action="<?= route_to('subkriteria.delete', $sk['id']) ?>" method="post" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
+                                    <form action="/admin/sub-kriteria/delete/<?= $sk['id'] ?>" method="post" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
                                         <?= csrf_field() ?>
                                         <button type="submit" title="Hapus">
                                             <i class="bi bi-trash"></i>

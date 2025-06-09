@@ -11,7 +11,7 @@ class KriteriaModel extends Model
 
     protected $useAutoIncrement = true;
 
-    protected $allowedFields = ['nama_kriteria', 'bobot', 'created_at', 'updated_at'];
+    protected $allowedFields = ['nama_kriteria', 'type', 'bobot', 'created_at', 'updated_at'];
 
     protected $useTimestamps = true;
 }

@@ -22,7 +22,6 @@ class CreateKriteriaTable extends Migration
             'type' => [
                 'type'       => 'ENUM',
                 'constraint' => ['cost', 'benefit'],
-                'default'    => 'benefit',
                 'null'       => false,
             ],
             'bobot' => [
