@@ -9,6 +9,20 @@
         required>
 </div>
 
+<!-- Bobot -->
+<div class="mb-3">
+    <label for="bobot" class="form-label text-muted small">Bobot</label>
+    <input type="number"
+        class="form-control form-control-sm border border-secondary-subtle px-3 py-2 shadow-sm"
+        name="bobot"
+        id="bobot"
+        value="<?= isset($kriteria) ? esc($kriteria['bobot']) : '' ?>"
+        min="0"
+        max="100"
+        step="0.01"
+        required>
+</div>
+
 <!-- Tipe -->
 <div class="mb-3">
     <label for="type" class="form-label text-muted small">Tipe</label>

@@ -182,6 +182,7 @@
                 <tr>
                     <th>#</th>
                     <th>Nama Kriteria</th>
+                    <th>Bobot</th>
                     <th>Tipe</th>
                     <th style="width: 100px;">Aksi</th>
                 </tr>
@@ -193,6 +194,7 @@
                         <tr>
                             <td data-label="#"> <?= $i++ ?> </td>
                             <td data-label="Nama Kriteria"><?= esc($k['nama_kriteria']) ?></td>
+                            <td data-label="Bobot"><?= esc($k['bobot']) ?></td>
                             <td data-label="Tipe"><?= esc($k['type']) ?></td>
                             <td data-label="Aksi">
                                 <div class="action-icons">

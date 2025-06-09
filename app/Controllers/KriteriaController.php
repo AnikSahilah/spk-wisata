@@ -52,6 +52,7 @@ class KriteriaController extends BaseController
 
         $this->kriteriaModel->insert([
             'nama_kriteria' => $data['nama_kriteria'],
+            'bobot' => $data['bobot'], // Default bobot
             'type' => $data['type'],
         ]);
 
